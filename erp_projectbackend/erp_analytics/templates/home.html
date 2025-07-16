@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}ERP Dashboard | Home{% endblock %}
+
+{% block content %}
+<div class="bg-gray-100 min-h-screen py-10 px-6">
+    <div class="max-w-7xl mx-auto">
+        <div class="text-center mb-12">
+            <h1 class="text-4xl font-bold text-gray-800 mb-2">Welcome to the ERP Management System</h1>
+            <p class="text-lg text-gray-600">Streamline your operations across departments with ease.</p>
+        </div>
+
+        <!-- Main Card Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+            <!-- Customers -->
+            <a href="{% url 'customer_list' %}" class="bg-white p-6 rounded-2xl shadow-md hover:shadow-xl transition border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-xl font-semibold text-gray-700">Customers</h2>
+                    <svg class="w-6 h-6 text-blue-500" fill="none" stroke="currentColor" stroke-width="2"
+                         viewBox="0 0 24 24">
+                        <path d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                    </svg>
+                </div>
+                <p class="text-gray-500">View, add, edit and manage customer records.</p>
+            </a>
+
+            <!-- Employees -->
+            <a href="{% url 'employee_list' %}" class="bg-white p-6 rounded-2xl shadow-md hover:shadow-xl transition border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-xl font-semibold text-gray-700">Employees</h2>
+                    <svg class="w-6 h-6 text-green-500" fill="none" stroke="currentColor" stroke-width="2"
+                         viewBox="0 0 24 24">
+                        <path d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                    </svg>
+                </div>
+                <p class="text-gray-500">Track employee profiles and roles.</p>
+            </a>
+
+            <!-- Sales -->
+            <a href="{% url 'sales_list' %}" class="bg-white p-6 rounded-2xl shadow-md hover:shadow-xl transition border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-xl font-semibold text-gray-700">Sales</h2>
+                    <svg class="w-6 h-6 text-red-500" fill="none" stroke="currentColor" stroke-width="2"
+                         viewBox="0 0 24 24">
+                        <path d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                    </svg>
+                </div>
+                <p class="text-gray-500">Manage sales records and analytics.</p>
+            </a>
+
+            <!-- Inventory -->
+            <a href="{% url 'inventory_list' %}" class="bg-white p-6 rounded-2xl shadow-md hover:shadow-xl transition border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-xl font-semibold text-gray-700">Inventory</h2>
+                    <svg class="w-6 h-6 text-yellow-500" fill="none" stroke="currentColor" stroke-width="2"
+                         viewBox="0 0 24 24">
+                        <path d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                    </svg>
+                </div>
+                <p class="text-gray-500">View and update stock levels.</p>
+            </a>
+
+            <!-- Finance -->
+            <a href="{% url 'finance_list' %}" class="bg-white p-6 rounded-2xl shadow-md hover:shadow-xl transition border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-xl font-semibold text-gray-700">Finance</h2>
+                    <svg class="w-6 h-6 text-indigo-500" fill="none" stroke="currentColor" stroke-width="2"
+                         viewBox="0 0 24 24">
+                        <path d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                    </svg>
+                </div>
+                <p class="text-gray-500">Monitor financial records and invoices.</p>
+            </a>
+
+            <!-- Logistics -->
+            <a href="{% url 'logistics_list' %}" class="bg-white p-6 rounded-2xl shadow-md hover:shadow-xl transition border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-xl font-semibold text-gray-700">Logistics</h2>
+                    <svg class="w-6 h-6 text-teal-500" fill="none" stroke="currentColor" stroke-width="2"
+                         viewBox="0 0 24 24">
+                        <path d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                    </svg>
+                </div>
+                <p class="text-gray-500">Manage delivery and transport units.</p>
+            </a>
+        </div>
+
+        <!-- Footer -->
+        <footer class="mt-16 text-center text-sm text-gray-400">
+            © {{ year|default:2025 }} ERP System. All rights reserved.
+        </footer>
+    </div>
+</div>
+{% endblock %}

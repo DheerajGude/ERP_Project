@@ -1,0 +1,110 @@
+{% extends 'erp_analytics/base.html' %}
+{% load static %}
+
+{% block title %}Profit & Loss Summary{% endblock %}
+
+{% block content %}
+<h2 class="text-2xl font-bold text-gray-700 mb-6">📊 Profit & Loss Summary</h2>
+
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-8">
+    <div class="bg-green-50 border border-green-200 p-4 rounded">
+        <p class="text-sm text-gray-500">Total Revenue</p>
+        <p class="text-xl font-bold text-green-700">₹ {{ total_revenue }}</p>
+    </div>
+    <div class="bg-red-50 border border-red-200 p-4 rounded">
+        <p class="text-sm text-gray-500">Total Expenses</p>
+        <p class="text-xl font-bold text-red-600">₹ {{ total_expenses }}</p>
+    </div>
+    <div class="bg-blue-50 border border-blue-200 p-4 rounded">
+        <p class="text-sm text-gray-500">Net Profit</p>
+        <p class="text-xl font-bold text-blue-600">₹ {{ net_profit }}</p>
+    </div>
+</div>
+
+<!-- Chart Section -->
+<div class="bg-white rounded shadow p-6 mb-8">
+    <h4 class="text-md font-semibold text-gray-800 mb-4">📈 Monthly Financial Overview</h4>
+    <canvas id="financeChart" height="120"></canvas>
+</div>
+
+<!-- Breakdown Table -->
+<div class="bg-white p-4 shadow rounded">
+    <h4 class="text-md font-semibold text-gray-800 mb-4">🧾 Monthly Breakdown</h4>
+    <div class="overflow-x-auto">
+        <table class="min-w-full text-sm border border-gray-300">
+            <thead class="bg-gray-100 text-gray-700 uppercase text-xs font-bold">
+                <tr>
+                    <th class="px-4 py-2 border text-left">Month</th>
+                    <th class="px-4 py-2 border text-left">Revenue</th>
+                    <th class="px-4 py-2 border text-left">Expenses</th>
+                    <th class="px-4 py-2 border text-left">Net</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in monthly_summary %}
+                <tr class="border-t border-gray-200">
+                    <td class="px-4 py-2 border">{{ row.month }}</td>
+                    <td class="px-4 py-2 border">₹ {{ row.revenue }}</td>
+                    <td class="px-4 py-2 border">₹ {{ row.expenses }}</td>
+                    <td class="px-4 py-2 border font-semibold {% if row.net >= 0 %}text-green-700{% else %}text-red-600{% endif %}">
+                        ₹ {{ row.net }}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const ctx = document.getElementById('financeChart').getContext('2d');
+    const chartData = {
+        labels: {{ chart.labels|safe }},
+        datasets: [
+            {
+                label: 'Revenue',
+                data: {{ chart.revenue|safe }},
+                backgroundColor: 'rgba(16, 185, 129, 0.5)',
+                borderColor: 'rgba(5, 150, 105, 1)',
+                borderWidth: 2,
+                fill: true,
+                tension: 0.4
+            },
+            {
+                label: 'Expenses',
+                data: {{ chart.expenses|safe }},
+                backgroundColor: 'rgba(239, 68, 68, 0.5)',
+                borderColor: 'rgba(220, 38, 38, 1)',
+                borderWidth: 2,
+                fill: true,
+                tension: 0.4
+            }
+        ]
+    };
+
+    const financeChart = new Chart(ctx, {
+        type: 'line',
+        data: chartData,
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: '₹ Amount'
+                    }
+                },
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Month'
+                    }
+                }
+            }
+        }
+    });
+</script>
+{% endblock %}

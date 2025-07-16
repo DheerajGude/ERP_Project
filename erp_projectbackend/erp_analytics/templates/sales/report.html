@@ -1,0 +1,93 @@
+{% extends 'erp_analytics/base.html' %}
+{% load static %}
+
+{% block title %}Sales Report{% endblock %}
+
+{% block content %}
+<h2 class="text-2xl font-bold text-gray-700 mb-6">📈 Sales Report & Analytics</h2>
+
+<!-- KPI Cards -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+    <div class="bg-white shadow rounded p-4">
+        <h3 class="text-gray-500 text-sm">Total Sales</h3>
+        <p class="text-2xl font-bold text-green-600">₹{{ total_sales }}</p>
+    </div>
+    <div class="bg-white shadow rounded p-4">
+        <h3 class="text-gray-500 text-sm">Total Orders</h3>
+        <p class="text-2xl font-bold text-blue-600">{{ total_orders }}</p>
+    </div>
+    <div class="bg-white shadow rounded p-4">
+        <h3 class="text-gray-500 text-sm">Top Customer</h3>
+        <p class="text-lg font-medium text-gray-800">{{ top_customer.name }}</p>
+    </div>
+    <div class="bg-white shadow rounded p-4">
+        <h3 class="text-gray-500 text-sm">Top Product</h3>
+        <p class="text-lg font-medium text-gray-800">{{ top_product }}</p>
+    </div>
+</div>
+
+<!-- Bar Chart: Monthly Sales -->
+<div class="bg-white shadow rounded-lg p-6 mb-8">
+    <h4 class="text-lg font-semibold mb-4 text-gray-700">Monthly Sales Trend</h4>
+    <canvas id="salesChart" height="120"></canvas>
+</div>
+
+<!-- Table of Sales Summary -->
+<div class="bg-white shadow rounded-lg overflow-x-auto p-6">
+    <h4 class="text-lg font-semibold mb-4 text-gray-700">Detailed Sales Summary</h4>
+    <table class="min-w-full table-auto text-sm">
+        <thead class="bg-gray-100 text-gray-600 uppercase tracking-wider">
+            <tr>
+                <th class="px-4 py-2">Month</th>
+                <th class="px-4 py-2">Total Orders</th>
+                <th class="px-4 py-2">Total Revenue</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for month, data in monthly_summary.items %}
+            <tr class="border-b">
+                <td class="px-4 py-2">{{ month }}</td>
+                <td class="px-4 py-2">{{ data.orders }}</td>
+                <td class="px-4 py-2">₹{{ data.revenue }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="3" class="text-center py-4 text-gray-500">No data available</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<!-- Export Buttons -->
+<div class="mt-6 flex space-x-4">
+    <a href="{% url 'sales_export_csv' %}" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">Export CSV</a>
+    <a href="{% url 'sales_export_pdf' %}" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded">Download PDF</a>
+</div>
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const ctx = document.getElementById('salesChart').getContext('2d');
+    const salesChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: {{ chart_labels|safe }},
+            datasets: [{
+                label: 'Monthly Sales (₹)',
+                data: {{ chart_data|safe }},
+                backgroundColor: '#3B82F6'
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { display: false }
+            },
+            scales: {
+                y: { beginAtZero: true }
+            }
+        }
+    });
+</script>
+{% endblock %}

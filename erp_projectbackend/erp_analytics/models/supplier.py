@@ -17,7 +17,7 @@ class Supplier(models.Model):
     created_at = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
-        return self.name
+        return str(self.name)
 
 
 class SupplierItem(models.Model):
@@ -59,7 +59,7 @@ class PurchaseOrderItem(models.Model):
     quantity = models.PositiveIntegerField()
 
     def total_price(self):
-        return self.quantity * self.item.unit_price
+        return self.quantity * self.purchase_order
 
     def __str__(self):
-        return f"{self.item.item_name} x {self.quantity}"
+        return f"{self.quantity} x {self.quantity}"

@@ -9,6 +9,13 @@ class Tax(models.Model):
 
     def __str__(self):
         return f"{self.name} ({self.rate}%)"
+    
+
+
+class Finance(models.Model):
+    # your fields here
+    pass
+
 
 
 class Invoice(models.Model):

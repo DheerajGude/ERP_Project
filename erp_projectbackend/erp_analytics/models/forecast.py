@@ -2,12 +2,22 @@ from django.db import models
 from django.utils import timezone
 
 
+
+class Forecast(models.Model):
+    model_name = models.CharField(max_length=100)
+    forecasted_value = models.FloatField()
+    run_date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.model_name} - {self.run_date}"
+
+
 class ForecastType(models.Model):
     name = models.CharField(max_length=100, unique=True)
     description = models.TextField(blank=True, null=True)
 
     def __str__(self):
-        return self.name
+        return str(self.name)
 
 
 class Forecast(models.Model):

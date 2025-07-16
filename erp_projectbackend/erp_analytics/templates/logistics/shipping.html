@@ -1,0 +1,51 @@
+{% extends 'erp_analytics/base.html' %}
+{% load static %}
+
+{% block title %}Logistics - Shipping{% endblock %}
+
+{% block content %}
+<h2 class="text-2xl font-bold text-gray-700 mb-6">🚚 Shipping Management</h2>
+
+<a href="{% url 'create_delivery' %}" class="mb-4 inline-block bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded shadow">
+    ➕ Add Shipping Entry
+</a>
+
+<div class="bg-white p-6 rounded shadow overflow-x-auto">
+    <table class="min-w-full border border-gray-200 text-sm text-gray-800">
+        <thead class="bg-gray-100 text-xs font-semibold uppercase text-gray-600">
+            <tr>
+                <th class="px-4 py-2 border">Order ID</th>
+                <th class="px-4 py-2 border">Shipping Company</th>
+                <th class="px-4 py-2 border">Tracking Number</th>
+                <th class="px-4 py-2 border">Destination</th>
+                <th class="px-4 py-2 border">Status</th>
+                <th class="px-4 py-2 border">Dispatched On</th>
+                <th class="px-4 py-2 border text-center">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for delivery in deliveries %}
+            <tr class="border-t border-gray-200 hover:bg-gray-50">
+                <td class="px-4 py-2 border">{{ delivery.order_id }}</td>
+                <td class="px-4 py-2 border">{{ delivery.shipping_company }}</td>
+                <td class="px-4 py-2 border">{{ delivery.tracking_number }}</td>
+                <td class="px-4 py-2 border">{{ delivery.destination }}</td>
+                <td class="px-4 py-2 border">
+                    <span class="px-2 py-1 rounded-full text-xs font-medium {% if delivery.status == 'Delivered' %}bg-green-100 text-green-700{% elif delivery.status == 'In Transit' %}bg-yellow-100 text-yellow-800{% else %}bg-red-100 text-red-600{% endif %}">
+                        {{ delivery.status }}
+                    </span>
+                </td>
+                <td class="px-4 py-2 border">{{ delivery.dispatched_date|date:"d M Y" }}</td>
+                <td class="px-4 py-2 border text-center">
+                    <a href="{% url 'track_delivery' delivery.id %}" class="text-blue-600 hover:underline text-sm">Track</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="7" class="text-center text-gray-500 py-6">No shipping entries yet.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

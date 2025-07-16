@@ -1,0 +1,62 @@
+{% extends 'erp_analytics/base.html' %}
+{% load static %}
+
+{% block title %}Sale Details{% endblock %}
+
+{% block content %}
+<h2 class="text-2xl font-bold text-gray-700 mb-6">Sale #{{ sale.id }}</h2>
+
+<!-- Back link -->
+<a href="{% url 'sales_list' %}" class="inline-block mb-4 text-blue-600 hover:underline">
+    &larr; Back to Sales Records
+</a>
+
+<!-- Sale Info -->
+<div class="bg-white rounded-lg shadow-md p-6 w-full max-w-3xl">
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-4">
+        <div>
+            <h4 class="text-gray-600 font-medium">Customer</h4>
+            <p class="text-lg font-semibold text-blue-700">{{ sale.customer.name }}</p>
+        </div>
+
+        <div>
+            <h4 class="text-gray-600 font-medium">Product Name</h4>
+            <p class="text-lg">{{ sale.product_name }}</p>
+        </div>
+
+        <div>
+            <h4 class="text-gray-600 font-medium">Quantity</h4>
+            <p class="text-lg">{{ sale.quantity }}</p>
+        </div>
+
+        <div>
+            <h4 class="text-gray-600 font-medium">Price per Unit</h4>
+            <p class="text-lg">₹{{ sale.price }}</p>
+        </div>
+
+        <div>
+            <h4 class="text-gray-600 font-medium">Total Amount</h4>
+            <p class="text-lg font-bold text-green-700">₹{{ sale.total_amount }}</p>
+        </div>
+
+        <div>
+            <h4 class="text-gray-600 font-medium">Sale Date</h4>
+            <p class="text-lg">{{ sale.date }}</p>
+        </div>
+    </div>
+
+    <div class="mt-6 flex justify-start space-x-4">
+        <a href="{% url 'sales_edit' sale.id %}" class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded">
+            Edit
+        </a>
+        <form method="POST" action="{% url 'sales_delete' sale.id %}" onsubmit="return confirm('Are you sure to delete this sale?')">
+            {% csrf_token %}
+            <button type="submit" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded">
+                Delete
+            </button>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

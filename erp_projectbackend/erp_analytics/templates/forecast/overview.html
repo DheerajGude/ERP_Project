@@ -1,0 +1,70 @@
+{% extends 'erp_analytics/base.html' %}
+{% load static %}
+
+{% block title %}Forecast Overview{% endblock %}
+
+{% block content %}
+<h2 class="text-2xl font-bold text-gray-700 mb-6">📈 Forecast Overview</h2>
+
+<!-- Action Buttons -->
+<div class="mb-6">
+    <a href="{% url 'forecast_run' %}" class="inline-block bg-blue-600 text-white font-semibold px-5 py-2 rounded hover:bg-blue-700">
+        ▶️ Run New Forecast
+    </a>
+    <a href="{% url 'forecast_history' %}" class="inline-block ml-4 text-gray-600 hover:underline">
+        🕒 View Forecast History
+    </a>
+</div>
+
+<!-- Forecast Metrics -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
+    <div class="bg-white border-l-4 border-blue-500 shadow p-4 rounded">
+        <h4 class="text-sm text-gray-500">Next Month Forecast</h4>
+        <p class="text-2xl font-bold text-gray-800">{{ forecast.next_month }}</p>
+    </div>
+    <div class="bg-white border-l-4 border-green-500 shadow p-4 rounded">
+        <h4 class="text-sm text-gray-500">Trend</h4>
+        <p class="text-2xl font-bold text-gray-800">{{ forecast.trend }}</p>
+    </div>
+    <div class="bg-white border-l-4 border-yellow-500 shadow p-4 rounded">
+        <h4 class="text-sm text-gray-500">Last Updated</h4>
+        <p class="text-2xl font-bold text-gray-800">{{ forecast.last_updated|date:"M d, Y" }}</p>
+    </div>
+</div>
+
+<!-- Forecast Chart -->
+<div class="bg-white shadow rounded-lg p-6">
+    <h3 class="text-lg font-semibold text-gray-700 mb-4">📊 Demand Forecast Curve</h3>
+    <canvas id="forecastChart" height="120"></canvas>
+</div>
+
+<!-- Chart Script -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const ctx = document.getElementById('forecastChart').getContext('2d');
+    const forecastChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: {{ forecast_chart.labels|safe }},
+            datasets: [{
+                label: 'Predicted Sales',
+                data: {{ forecast_chart.data|safe }},
+                fill: true,
+                borderColor: '#3b82f6',
+                backgroundColor: 'rgba(59, 130, 246, 0.2)',
+                tension: 0.4
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { position: 'top' },
+                title: {
+                    display: true,
+                    text: 'Sales Forecast (Next 6 Months)'
+                }
+            }
+        }
+    });
+</script>
+{% endblock %}

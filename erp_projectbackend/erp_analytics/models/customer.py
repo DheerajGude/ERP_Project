@@ -3,12 +3,13 @@ from django.utils import timezone
 
 
 class Customer(models.Model):
-    CUSTOMER_TYPES = [
-        ('Retail', 'Retail'),
-        ('Wholesale', 'Wholesale'),
-        ('Corporate', 'Corporate'),
-    ]
+    customer_type=[
+    ('Retail', 'Retail'),
+    ('Wholesale', 'Wholesale'),
+    ('Corporate', 'Corporate'),
 
+  
+    ]
     STATUS_CHOICES = [
         ('Active', 'Active'),
         ('Inactive', 'Inactive'),
@@ -23,7 +24,7 @@ class Customer(models.Model):
     state = models.CharField(max_length=100)
     pincode = models.CharField(max_length=10)
     country = models.CharField(max_length=100, default='India')
-    customer_type = models.CharField(max_length=50, choices=CUSTOMER_TYPES, default='Retail')
+    customer_type = models.CharField(max_length=50, default='Retail')
     gst_number = models.CharField(max_length=20, blank=True, null=True)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='Active')
     created_at = models.DateTimeField(default=timezone.now)
@@ -35,8 +36,9 @@ class Customer(models.Model):
         verbose_name_plural = "Customers"
 
     def __str__(self):
-        return f"{self.full_name} - {self.email}"
+        return f"{self.full_name} ({self.email})"  # Make sure both fields exist
+
+
 
     def is_active(self):
         return self.status == 'Active'
-+

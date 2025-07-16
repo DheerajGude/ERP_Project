@@ -7,7 +7,7 @@ class Department(models.Model):
     description = models.TextField(blank=True, null=True)
 
     def __str__(self):
-        return self.name
+        return str(self.name)
 
 
 class Role(models.Model):
@@ -15,7 +15,7 @@ class Role(models.Model):
     description = models.TextField(blank=True, null=True)
 
     def __str__(self):
-        return self.title
+        return str(self.title)
 
 
 class Employee(models.Model):

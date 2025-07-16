@@ -1,0 +1,87 @@
+{% extends 'erp_analytics/base.html' %}
+{% load static %}
+
+{% block title %}Performance Review{% endblock %}
+
+{% block content %}
+<h2 class="text-2xl font-bold text-gray-700 mb-6">📈 Performance Review</h2>
+
+<a href="{% url 'employee_detail' employee.id %}" class="inline-block mb-4 text-blue-600 hover:underline">
+    &larr; Back to Profile
+</a>
+
+<div class="bg-white shadow-md rounded-lg p-6 max-w-5xl">
+    <!-- Header -->
+    <div class="flex items-center justify-between mb-6">
+        <div>
+            <h3 class="text-xl font-semibold text-gray-800">{{ employee.name }}</h3>
+            <p class="text-sm text-gray-600">{{ employee.role }}</p>
+        </div>
+        <div class="text-sm text-gray-500">Last Reviewed: {{ last_review_date|date:"F d, Y" }}</div>
+    </div>
+
+    <!-- KPI Scores -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+        {% for metric in performance_metrics %}
+        <div class="bg-gray-50 rounded shadow-sm p-4 border border-gray-200">
+            <p class="text-sm text-gray-600 font-medium mb-1">{{ metric.label }}</p>
+            <div class="text-xl font-bold text-gray-800">{{ metric.score }} / 10</div>
+            <div class="text-xs text-gray-500">{{ metric.comment|default:"No comment" }}</div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Chart Section -->
+    <div class="bg-white border border-gray-200 rounded shadow p-4 mb-8">
+        <h4 class="text-md font-semibold text-gray-800 mb-2">📊 Monthly Score Trend</h4>
+        <canvas id="performanceChart" height="120"></canvas>
+    </div>
+
+    <!-- Final Remark -->
+    <div class="mt-6 bg-gray-50 border border-gray-200 rounded p-4">
+        <h4 class="text-sm font-semibold text-gray-700 mb-1">📌 Final Remarks</h4>
+        <p class="text-sm text-gray-800">{{ final_remarks|default:"No remarks available." }}</p>
+    </div>
+</div>
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const ctx = document.getElementById('performanceChart').getContext('2d');
+    const performanceChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: {{ chart_data.labels|safe }},
+            datasets: [{
+                label: 'Performance Score',
+                data: {{ chart_data.values|safe }},
+                backgroundColor: 'rgba(59, 130, 246, 0.2)',
+                borderColor: 'rgba(59, 130, 246, 1)',
+                borderWidth: 2,
+                tension: 0.4,
+                fill: true,
+                pointRadius: 4,
+                pointBackgroundColor: 'rgba(59, 130, 246, 1)'
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    suggestedMin: 0,
+                    suggestedMax: 10,
+                    title: {
+                        display: true,
+                        text: 'Score'
+                    }
+                },
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Month'
+                    }
+                }
+            }
+        }
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,50 @@
+{% extends 'erp_analytics/base.html' %}
+{% load static %}
+
+{% block title %}Suppliers{% endblock %}
+
+{% block content %}
+<h2 class="text-2xl font-bold text-gray-700 mb-6">🏷️ Supplier Directory</h2>
+
+<a href="{% url 'supplier_create' %}" class="mb-4 inline-block bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded shadow">
+    ➕ Add New Supplier
+</a>
+
+<div class="bg-white shadow rounded-lg p-6 overflow-x-auto">
+    <table class="min-w-full text-sm border border-gray-300">
+        <thead class="bg-gray-100 text-gray-700 uppercase text-xs font-bold">
+            <tr>
+                <th class="px-4 py-2 border text-left">Company</th>
+                <th class="px-4 py-2 border text-left">Category</th>
+                <th class="px-4 py-2 border text-left">Contact Person</th>
+                <th class="px-4 py-2 border text-left">Phone</th>
+                <th class="px-4 py-2 border text-left">Rating</th>
+                <th class="px-4 py-2 border text-center">Actions</th>
+            </tr>
+        </thead>
+        <tbody class="text-gray-800">
+            {% for supplier in suppliers %}
+            <tr class="border-t border-gray-200 hover:bg-gray-50">
+                <td class="px-4 py-3 border">{{ supplier.name }}</td>
+                <td class="px-4 py-3 border">{{ supplier.category }}</td>
+                <td class="px-4 py-3 border">{{ supplier.contact_person }}</td>
+                <td class="px-4 py-3 border">{{ supplier.phone }}</td>
+                <td class="px-4 py-3 border">
+                    {% for i in "12345"|slice:":supplier.rating" %}
+                        ⭐
+                    {% endfor %}
+                    <span class="text-sm text-gray-500 ml-2">({{ supplier.rating }}/5)</span>
+                </td>
+                <td class="px-4 py-3 border text-center">
+                    <a href="{% url 'supplier_edit' supplier.id %}" class="text-blue-600 hover:underline">Edit</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6" class="text-center text-gray-500 py-6">No suppliers found.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

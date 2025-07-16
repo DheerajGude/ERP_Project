@@ -1,0 +1,47 @@
+{% extends 'erp_analytics/base.html' %}
+{% load static %}
+
+{% block title %}Customer Directory{% endblock %}
+
+{% block content %}
+<h2 class="text-2xl font-bold text-gray-700 mb-6">🧑‍💼 Customer Directory</h2>
+
+<!-- Create New -->
+<a href="{% url 'customer_create' %}" class="mb-4 inline-block bg-blue-600 text-white font-semibold px-5 py-2 rounded hover:bg-blue-700">
+    ➕ Add Customer
+</a>
+
+<!-- Table -->
+<div class="overflow-x-auto bg-white shadow-md rounded-lg">
+    <table class="min-w-full text-sm table-auto">
+        <thead class="bg-gray-100 text-gray-600 uppercase text-xs">
+            <tr>
+                <th class="px-4 py-3 text-left">Name</th>
+                <th class="px-4 py-3 text-left">Email</th>
+                <th class="px-4 py-3 text-left">Phone</th>
+                <th class="px-4 py-3 text-left">Address</th>
+                <th class="px-4 py-3 text-left">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for customer in customers %}
+            <tr class="border-b hover:bg-gray-50">
+                <td class="px-4 py-2">{{ customer.name }}</td>
+                <td class="px-4 py-2">{{ customer.email }}</td>
+                <td class="px-4 py-2">{{ customer.phone }}</td>
+                <td class="px-4 py-2">{{ customer.address }}</td>
+                <td class="px-4 py-2 space-x-2">
+                    <a href="{% url 'customer_detail' customer.id %}" class="text-blue-600 hover:underline">View</a>
+                    <a href="{% url 'customer_edit' customer.id %}" class="text-yellow-600 hover:underline">Edit</a>
+                    <a href="{% url 'customer_delete' customer.id %}" class="text-red-600 hover:underline">Delete</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5" class="text-center text-gray-500 py-6">No customers found.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

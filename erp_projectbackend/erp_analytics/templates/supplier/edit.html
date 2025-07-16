@@ -1,0 +1,69 @@
+{% extends 'erp_analytics/base.html' %}
+{% load static %}
+
+{% block title %}Edit Supplier{% endblock %}
+
+{% block content %}
+<h2 class="text-2xl font-bold text-gray-700 mb-6">✏️ Edit Supplier: {{ supplier.name }}</h2>
+
+<div class="max-w-3xl bg-white p-6 rounded shadow-md">
+    <form method="POST">
+        {% csrf_token %}
+        
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <!-- Supplier Name -->
+            <div>
+                <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Supplier Name</label>
+                <input type="text" name="name" id="name" value="{{ form.name.value|default:supplier.name }}" 
+                       class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring focus:border-blue-400" required>
+            </div>
+
+            <!-- Category -->
+            <div>
+                <label for="category" class="block text-sm font-medium text-gray-700 mb-1">Category</label>
+                <select name="category" id="category" 
+                        class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring focus:border-blue-400" required>
+                    {% for key, value in form.category.field.choices %}
+                        <option value="{{ key }}" {% if form.category.value == key or supplier.category == key %}selected{% endif %}>{{ value }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <!-- Contact Person -->
+            <div>
+                <label for="contact_person" class="block text-sm font-medium text-gray-700 mb-1">Contact Person</label>
+                <input type="text" name="contact_person" id="contact_person" value="{{ form.contact_person.value|default:supplier.contact_person }}" 
+                       class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring focus:border-blue-400" required>
+            </div>
+
+            <!-- Phone -->
+            <div>
+                <label for="phone" class="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
+                <input type="text" name="phone" id="phone" value="{{ form.phone.value|default:supplier.phone }}" 
+                       class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring focus:border-blue-400" required>
+            </div>
+
+            <!-- Email -->
+            <div class="sm:col-span-2">
+                <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                <input type="email" name="email" id="email" value="{{ form.email.value|default:supplier.email }}" 
+                       class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring focus:border-blue-400">
+            </div>
+
+            <!-- Rating -->
+            <div class="sm:col-span-2">
+                <label for="rating" class="block text-sm font-medium text-gray-700 mb-1">Rating (1–5)</label>
+                <input type="number" name="rating" id="rating" min="1" max="5" value="{{ form.rating.value|default:supplier.rating }}"
+                       class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring focus:border-blue-400">
+            </div>
+        </div>
+
+        <!-- Update Button -->
+        <div class="mt-6 text-right">
+            <button type="submit" class="bg-yellow-600 hover:bg-yellow-700 text-white font-semibold py-2 px-6 rounded shadow">
+                💾 Update Supplier
+            </button>
+        </div>
+    </form>
+</div>
+{% endblock %}

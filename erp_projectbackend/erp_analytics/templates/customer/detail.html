@@ -1,0 +1,47 @@
+{% extends 'erp_analytics/base.html' %}
+{% load static %}
+
+{% block title %}Customer Profile{% endblock %}
+
+{% block content %}
+<h2 class="text-2xl font-bold text-gray-700 mb-6">🗂️ Customer Profile: {{ customer.name }}</h2>
+
+<a href="{% url 'customer_list' %}" class="inline-block mb-4 text-blue-600 hover:underline">
+    &larr; Back to Customer Directory
+</a>
+
+<div class="bg-white shadow-md rounded-lg p-6 max-w-3xl">
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+        <div>
+            <h4 class="text-gray-500 text-sm">Name</h4>
+            <p class="text-lg text-gray-800 font-semibold">{{ customer.name }}</p>
+        </div>
+        <div>
+            <h4 class="text-gray-500 text-sm">Email</h4>
+            <p class="text-lg text-gray-800">{{ customer.email }}</p>
+        </div>
+        <div>
+            <h4 class="text-gray-500 text-sm">Phone</h4>
+            <p class="text-lg text-gray-800">{{ customer.phone|default:"—" }}</p>
+        </div>
+        <div>
+            <h4 class="text-gray-500 text-sm">Address</h4>
+            <p class="text-lg text-gray-800">{{ customer.address|default:"Not provided" }}</p>
+        </div>
+        <div>
+            <h4 class="text-gray-500 text-sm">Created On</h4>
+            <p class="text-lg text-gray-800">{{ customer.created_at|date:"M d, Y" }}</p>
+        </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="mt-6 flex space-x-4">
+        <a href="{% url 'customer_edit' customer.id %}" class="bg-yellow-500 text-white font-semibold px-5 py-2 rounded hover:bg-yellow-600">
+            ✏️ Edit
+        </a>
+        <a href="{% url 'customer_delete' customer.id %}" class="bg-red-600 text-white font-semibold px-5 py-2 rounded hover:bg-red-700">
+            ❌ Delete
+        </a>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,64 @@
+{% extends 'erp_analytics/base.html' %}
+{% load static %}
+
+{% block title %}Add New Sale{% endblock %}
+
+{% block content %}
+<h2 class="text-2xl font-bold text-gray-700 mb-6">Add New Sale</h2>
+
+<!-- Back Link -->
+<a href="{% url 'sales_list' %}" class="inline-block mb-6 text-blue-600 hover:underline">
+    &larr; Back to Sales List
+</a>
+
+<!-- Sale Form -->
+<form method="POST" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 w-full max-w-3xl">
+    {% csrf_token %}
+    
+    <!-- Customer -->
+    <div class="mb-4">
+        <label for="customer" class="block text-gray-700 text-sm font-bold mb-2">Customer</label>
+        <select name="customer" id="customer" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-blue-500">
+            <option value="">-- Select Customer --</option>
+            {% for customer in customers %}
+                <option value="{{ customer.id }}" {% if sale.customer.id == customer.id %}selected{% endif %}>{{ customer.name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <!-- Product Name -->
+    <div class="mb-4">
+        <label for="product_name" class="block text-gray-700 text-sm font-bold mb-2">Product Name</label>
+        <input type="text" name="product_name" id="product_name" value="{{ sale.product_name|default:'' }}" required class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 focus:outline-none focus:ring-blue-500" />
+    </div>
+
+    <!-- Quantity -->
+    <div class="mb-4">
+        <label for="quantity" class="block text-gray-700 text-sm font-bold mb-2">Quantity</label>
+        <input type="number" name="quantity" id="quantity" value="{{ sale.quantity|default:'' }}" min="1" required class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 focus:outline-none focus:ring-blue-500" />
+    </div>
+
+    <!-- Price -->
+    <div class="mb-4">
+        <label for="price" class="block text-gray-700 text-sm font-bold mb-2">Price per Unit (₹)</label>
+        <input type="number" name="price" id="price" value="{{ sale.price|default:'' }}" min="0" step="0.01" required class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 focus:outline-none focus:ring-blue-500" />
+    </div>
+
+    <!-- Date -->
+    <div class="mb-4">
+        <label for="date" class="block text-gray-700 text-sm font-bold mb-2">Sale Date</label>
+        <input type="date" name="date" id="date" value="{{ sale.date|default:today }}" required class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 focus:outline-none focus:ring-blue-500" />
+    </div>
+
+    <!-- Submit -->
+    <div class="flex items-center justify-between">
+        <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded focus:outline-none focus:shadow-outline">
+            Save Sale
+        </button>
+        <button type="reset" class="bg-gray-400 hover:bg-gray-500 text-white font-bold py-2 px-6 rounded focus:outline-none focus:shadow-outline">
+            Reset
+        </button>
+    </div>
+</form>
+
+{% endblock %}

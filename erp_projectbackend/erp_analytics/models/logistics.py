@@ -4,6 +4,31 @@ from erp_analytics.models.sales import SalesOrder
 from erp_analytics.models.employee import Employee
 
 
+
+class Logistics(models.Model):
+    name = models.CharField(max_length=100)
+    logistics_partner = models.CharField(max_length=100)
+    origin = models.CharField(max_length=100)
+    destination = models.CharField(max_length=100)
+    dispatch_date = models.DateField()
+    expected_delivery = models.DateField()
+    status = models.CharField(
+        max_length=50,
+        choices=[
+            ('Dispatched', 'Dispatched'),
+            ('In Transit', 'In Transit'),
+            ('Delivered', 'Delivered'),
+            ('Delayed', 'Delayed'),
+            ('Cancelled', 'Cancelled'),
+        ],
+        default='Dispatched'
+    )
+    tracking_id = models.CharField(max_length=100, unique=True)
+    notes = models.TextField(blank=True, null=True)
+
+    def __str__(self):
+        return f"{self.name} - {self.tracking_id}"
+
 class Vehicle(models.Model):
     VEHICLE_TYPES = [
         ('Truck', 'Truck'),
@@ -42,7 +67,7 @@ class Shipment(models.Model):
     created_at = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
-        return f"Shipment #{self.id} - {self.status}"
+        return f"Shipment #{self.departure_time} - {self.status}"
 
     def is_delayed(self):
         return self.actual_arrival and self.actual_arrival > self.estimated_arrival
@@ -55,4 +80,5 @@ class DeliveryStatus(models.Model):
     status_note = models.CharField(max_length=255)
 
     def __str__(self):
-        return f"{self.shipment} @ {self.status_time.strftime('%Y-%m-%d %H:%M')}"
+        return f"Shipment: {self.shipment}"
+

@@ -1,0 +1,82 @@
+{% extends 'erp_analytics/base.html' %}
+{% load static %}
+
+{% block title %}ERP Dashboard{% endblock %}
+
+{% block content %}
+<h2 class="text-2xl font-bold text-gray-700 mb-6">Dashboard Overview</h2>
+
+<!-- Summary Cards -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+
+    <div class="bg-white p-6 rounded-lg shadow hover:shadow-lg transition">
+        <h3 class="text-gray-600 text-sm font-medium">Total Sales</h3>
+        <p class="text-2xl font-bold text-blue-600 mt-1">{{ total_sales }}</p>
+    </div>
+
+    <div class="bg-white p-6 rounded-lg shadow hover:shadow-lg transition">
+        <h3 class="text-gray-600 text-sm font-medium">Inventory Items</h3>
+        <p class="text-2xl font-bold text-green-600 mt-1">{{ total_inventory }}</p>
+    </div>
+
+    <div class="bg-white p-6 rounded-lg shadow hover:shadow-lg transition">
+        <h3 class="text-gray-600 text-sm font-medium">Employees</h3>
+        <p class="text-2xl font-bold text-purple-600 mt-1">{{ total_employees }}</p>
+    </div>
+
+    <div class="bg-white p-6 rounded-lg shadow hover:shadow-lg transition">
+        <h3 class="text-gray-600 text-sm font-medium">Customers</h3>
+        <p class="text-2xl font-bold text-pink-600 mt-1">{{ total_customers }}</p>
+    </div>
+</div>
+
+<!-- Charts or Graphs -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-10">
+
+    <!-- Sales Chart Placeholder -->
+    <div class="bg-white rounded-lg shadow p-6">
+        <h3 class="text-lg font-semibold text-gray-700 mb-4">Monthly Sales Trend</h3>
+        <img src="{% static 'erp_analytics/images/sales_chart_sample.png' %}" alt="Sales Chart" class="rounded-md w-full">
+    </div>
+
+    <!-- Inventory Chart Placeholder -->
+    <div class="bg-white rounded-lg shadow p-6">
+        <h3 class="text-lg font-semibold text-gray-700 mb-4">Inventory Stock Levels</h3>
+        <img src="{% static 'erp_analytics/images/inventory_chart_sample.png' %}" alt="Inventory Chart" class="rounded-md w-full">
+    </div>
+
+</div>
+
+<!-- Quick Links -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <a href="{% url 'sales_list' %}" class="bg-blue-50 border-l-4 border-blue-600 p-4 rounded hover:bg-blue-100">
+        <h4 class="font-semibold text-blue-700">Manage Sales</h4>
+        <p class="text-sm text-gray-600">View, add, and analyze all sales records</p>
+    </a>
+
+    <a href="{% url 'inventory_list' %}" class="bg-green-50 border-l-4 border-green-600 p-4 rounded hover:bg-green-100">
+        <h4 class="font-semibold text-green-700">Inventory Management</h4>
+        <p class="text-sm text-gray-600">Track items and stock levels</p>
+    </a>
+
+    <a href="{% url 'forecast_overview' %}" class="bg-yellow-50 border-l-4 border-yellow-500 p-4 rounded hover:bg-yellow-100">
+        <h4 class="font-semibold text-yellow-700">Forecast Analysis</h4>
+        <p class="text-sm text-gray-600">See future demand predictions</p>
+    </a>
+
+    <a href="{% url 'employee_list' %}" class="bg-purple-50 border-l-4 border-purple-600 p-4 rounded hover:bg-purple-100">
+        <h4 class="font-semibold text-purple-700">Employee Directory</h4>
+        <p class="text-sm text-gray-600">Manage HR records and attendance</p>
+    </a>
+
+    <a href="{% url 'finance_list' %}" class="bg-red-50 border-l-4 border-red-500 p-4 rounded hover:bg-red-100">
+        <h4 class="font-semibold text-red-700">Finance Overview</h4>
+        <p class="text-sm text-gray-600">Invoices, payments, and P&L summary</p>
+    </a>
+
+    <a href="{% url 'supplier_list' %}" class="bg-indigo-50 border-l-4 border-indigo-600 p-4 rounded hover:bg-indigo-100">
+        <h4 class="font-semibold text-indigo-700">Suppliers</h4>
+        <p class="text-sm text-gray-600">Supplier info and ratings</p>
+    </a>
+</div>
+{% endblock %}

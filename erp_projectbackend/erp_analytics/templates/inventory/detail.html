@@ -1,0 +1,84 @@
+{% extends 'erp_analytics/base.html' %}
+{% load static %}
+
+{% block title %}Inventory Item Details{% endblock %}
+
+{% block content %}
+<h2 class="text-2xl font-bold text-gray-700 mb-6">🧾 Inventory Item: {{ item.name }}</h2>
+
+<!-- Back Link -->
+<a href="{% url 'inventory_list' %}" class="inline-block mb-4 text-blue-600 hover:underline">
+    &larr; Back to Inventory List
+</a>
+
+<!-- Item Details Card -->
+<div class="bg-white shadow-md rounded-lg p-6 max-w-3xl mb-6">
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+        <div>
+            <h4 class="text-gray-500 text-sm">Name</h4>
+            <p class="text-lg text-gray-800 font-semibold">{{ item.name }}</p>
+        </div>
+        <div>
+            <h4 class="text-gray-500 text-sm">Category</h4>
+            <p class="text-lg text-gray-800">{{ item.category }}</p>
+        </div>
+        <div>
+            <h4 class="text-gray-500 text-sm">Stock Available</h4>
+            <p class="text-lg {{ item.quantity < item.reorder_level|default:0|int and 'text-red-600' or 'text-green-600' }}">
+                {{ item.quantity }}
+            </p>
+        </div>
+        <div>
+            <h4 class="text-gray-500 text-sm">Unit Price</h4>
+            <p class="text-lg text-gray-800">₹{{ item.unit_price }}</p>
+        </div>
+        <div>
+            <h4 class="text-gray-500 text-sm">Reorder Level</h4>
+            <p class="text-lg text-gray-800">{{ item.reorder_level }}</p>
+        </div>
+        <div>
+            <h4 class="text-gray-500 text-sm">Last Updated</h4>
+            <p class="text-lg text-gray-800">{{ item.updated_at|date:"M d, Y" }}</p>
+        </div>
+    </div>
+
+    {% if item.quantity < item.reorder_level %}
+    <div class="mt-6 p-4 bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700">
+        ⚠️ Low stock alert: Consider restocking this item.
+    </div>
+    {% endif %}
+</div>
+
+<!-- Transaction History (Optional if available) -->
+{% if transactions %}
+<div class="bg-white shadow rounded-lg p-6 max-w-4xl">
+    <h3 class="text-lg font-semibold text-gray-700 mb-4">Stock Transaction History</h3>
+    <div class="overflow-x-auto">
+        <table class="min-w-full table-auto text-sm">
+            <thead class="bg-gray-100 text-gray-600 uppercase text-xs">
+                <tr>
+                    <th class="px-4 py-2">Date</th>
+                    <th class="px-4 py-2">Type</th>
+                    <th class="px-4 py-2">Quantity</th>
+                    <th class="px-4 py-2">Remarks</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for txn in transactions %}
+                <tr class="border-b">
+                    <td class="px-4 py-2">{{ txn.date|date:"Y-m-d" }}</td>
+                    <td class="px-4 py-2">{{ txn.transaction_type }}</td>
+                    <td class="px-4 py-2">{{ txn.quantity }}</td>
+                    <td class="px-4 py-2">{{ txn.notes }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="4" class="text-center py-4 text-gray-500">No transactions found.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endif %}
+{% endblock %}
